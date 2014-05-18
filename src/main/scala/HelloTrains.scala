@@ -63,9 +63,9 @@ object Main extends App {
 
 class Printer extends Actor {
   val snap1 = (r: Rotation) => s"""
-        ooOOO            Pociąg obraca ziemię pod sobą,
+        ooOOO            Pociąg obraca Dysk pod sobą,
        oo      _____     samemu pozostając w bezruchu.
-      _I__n_n__||_||     Aktualny obrót ziemi to: ${r.h}N ${r.v}W
+      _I__n_n__||_||     Aktualny obrót Dysku to: ${r.h}N ${r.v}W
     >(_________|_7_|     
      /o ()() ()() o 
 ≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠
@@ -73,9 +73,9 @@ class Printer extends Actor {
   """
 
   val snap2 = (r: Rotation) => s"""
-        ooooo            Pociąg obraca ziemię pod sobą,
+        ooooo            Pociąg obraca Dysk pod sobą,
        OO      _____     samemu pozostając w bezruchu.
-      _I__n_n__||_||     Aktualny obrót ziemi to: ${r.h}N ${r.v}W
+      _I__n_n__||_||     Aktualny obrót Dysku to: ${r.h}N ${r.v}W
     >(_________|_7_|
      /O ()() ()() o 
 ≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠
@@ -83,9 +83,9 @@ class Printer extends Actor {
   """
 
   val snap3 = (r: Rotation) => s"""
-        OOOoo            Pociąg obraca ziemię pod sobą,
+        OOOoo            Pociąg obraca Dysk pod sobą,
        oo      _____     samemu pozostając w bezruchu.
-      _I__n_n__||_||     Aktualny obrót ziemi to: ${r.h}N ${r.v}W
+      _I__n_n__||_||     Aktualny obrót Dysku to: ${r.h}N ${r.v}W
     >(_________|_7_|
      /o ()() ()() O 
 ≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠
