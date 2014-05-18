@@ -1,15 +1,19 @@
+package kubap.trains
+
 import akka.actor.{ ActorRef, ActorSystem, Props, Actor, Cancellable}
 import concurrent.duration._
+import akka.kernel.Bootable
 import language.implicitConversions
 
 class Train(world: ActorRef, horizontalSpeed: Degree, verticalSpeed: Degree) extends Actor {
   import scala.concurrent.ExecutionContext.Implicits.global
+
   var cancellable: Option[Cancellable] = None
   
   val stopped: Receive = {
     case Start => 
       cancellable = Some(context.system.scheduler.schedule(
-        0.seconds, 0.5.second, world, RotateBy(Rotation(horizontalSpeed, verticalSpeed))))
+        0.second, 0.5.seconds, world, RotateBy(Rotation(horizontalSpeed, verticalSpeed))))
       context.become(running)
   }  
 
@@ -36,20 +40,28 @@ class World extends Actor {
   }
 }
 
-object HelloTrains extends App {
-
+class HelloTrains extends Bootable {
   val universe = ActorSystem("universe")
-  val world = universe.actorOf(Props[World], name = "world")
-  val train = universe.actorOf(Props(new Train(world, 0.01, 0.005)), name = "train")
 
-  train ! Start
+  def startup = {
+    val world = universe.actorOf(Props[World], name = "world")
+    val train = universe.actorOf(Props(new Train(world, 0.01, 0.005)), name = "train")
+    
+    train ! Start
 
-  sys.addShutdownHook(universe.shutdown())
+    sys.addShutdownHook(universe.shutdown())
+  }
+
+  def shutdown = {
+    universe.shutdown()
+  }
+}
+
+object Main extends App {
+  (new HelloTrains).startup()
 }
 
 class Printer extends Actor {
-  import scala.Console
-
   val snap1 = (r: Rotation) => s"""
         ooOOO            Pociąg obraca ziemię pod sobą,
        oo      _____     samemu pozostając w bezruchu.
