@@ -5,15 +5,25 @@ import language.implicitConversions
 class Train(world: ActorRef, horizontalSpeed: Degree, verticalSpeed: Degree) extends Actor {
   import scala.concurrent.ExecutionContext.Implicits.global
   var cancellable: Option[Cancellable] = None
-  def receive = {
+  
+  val stopped: Receive = {
     case Start => 
       cancellable = Some(context.system.scheduler.schedule(
         0.seconds, 0.5.second, world, RotateBy(Rotation(horizontalSpeed, verticalSpeed))))
-    case Stop => cancellable match {
-      case Some(c) => c.cancel()
-      case None =>
+      context.become(running)
+  }  
+
+  val running: Receive = {
+    case Stop => {
+      cancellable match {
+        case Some(c) => c.cancel()
+        case None => 
+      }
+      context.become(stopped)
     }
   }
+
+  def receive = stopped
 }
 
 class World extends Actor {
